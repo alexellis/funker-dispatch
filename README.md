@@ -31,6 +31,7 @@ cd funker-dispatch
 git clone https://github.com/alexellis/funker-node
 docker build -t funker-dispatch .
 
+docker network create --attachable -d overlay funker
 docker run --net=funker -p 3000:3000 --name dispatch funker-dispatch
 ```
 
