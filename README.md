@@ -1,5 +1,20 @@
 # funker-dispatch
-HTTP dispatch for Amazon AWS triggers or Alexa SDK
+HTTP dispatch for Amazon AWS triggers or Alexa SDK.
+
+The Alexa service can invoke either an AWS Lambda function or a HTTPs endpoint. In this project we use the funker framework/idea to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
+
+Technical architecture:
+======================
+
+![](https://raw.githubusercontent.com/alexellis/funker-dispatch/master/alexa-funker.png)
+
+Alexa custom skill invokes our HTTP dispatcher, which uses an attachable swarm network and name resolution to lookup a matching Docker service by name. The funker-node library is then used to dispatch the request and collect the response which is returned to AWS. Alexa will then speak out the response.
+
+Example of funker handler function in Node.js
+
+* [HelloWorldIntent](https://github.com/alexellis/helloworldintent-funker)
+
+This function finds the count of people in space by querying a remote JSON API over HTTP.
 
 Usage:
 ======
@@ -12,11 +27,6 @@ docker build -t funker-dispatch .
 
 docker run --net=funker -p 3000:3000 --name dispatch funker-dispatch
 ```
-
-Technical architecture:
-======================
-
-![](https://raw.githubusercontent.com/alexellis/funker-dispatch/master/alexa-funker.png)
 
 Sample JSON from Alexa Skills kit:
 =================================
