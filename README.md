@@ -4,7 +4,7 @@ HTTP dispatch for Amazon AWS triggers or Alexa SDK
 Usage:
 ======
 
-``
+```
 git clone https://github.com/alexellis/funker-dispatch
 cd funker-dispatch
 git clone https://github.com/alexellis/funker-node
