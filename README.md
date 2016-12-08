@@ -22,7 +22,12 @@ The Alexa custom skill invokes our API gateway or HTTP dispatcher. Docker's atta
 
 Functions are written to implement a simple TCP socket on port 9999. The original concept for the functions was put together by [Ben F / Justin Cormack](https://github.com/bfirsh/serverless-docker) from the Docker team.
 
-The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my [Raspberry Pi 2 Swarm](https://github.com/alexellis/docker-arm/). 
+The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my Raspberry Pi 2 Swarm
+
+**See also:**
+
+* Repo for Docker on ARM (images, tutorials): [alexellis/docker-arm](https://github.com/alexellis/docker-arm/)
+* [Raspberry Pi Docker Swarm deep dive](http://blog.alexellis.io/live-deep-dive-pi-swarm/)
 
 > To build the Docker images for 64-bit just change the base image to a 64-bit Node image such as `node:6.9-slim`
 
