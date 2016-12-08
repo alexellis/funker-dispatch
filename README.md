@@ -22,7 +22,7 @@ Functions are written to implement a simple TCP socket on port 9999. The origina
 
 The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my Raspberry Pi 2 Swarm:
 
-**See also:**
+**See also: Getting started with Docker & Swarm on the Raspberry Pi**
 
 * Repo for Docker on ARM (images, tutorials): [alexellis/docker-arm](https://github.com/alexellis/docker-arm/)
 * [Raspberry Pi Docker Swarm deep dive](http://blog.alexellis.io/live-deep-dive-pi-swarm/)
@@ -67,6 +67,10 @@ cd funker-dispatch
 curl -Sv -H "Content-Type: application/json" -X POST https://cad07930.ngrok.io -d @./sample_request.json
 ```
 
+Get in touch / feedback
+========================
+
+Please get in touch on Twitter [@alexellisuk](https://twitter.com/alexellisuk)
 
 
 Sample JSON from Alexa Skills kit:
