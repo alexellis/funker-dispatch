@@ -3,6 +3,13 @@ HTTP dispatch for Amazon AWS triggers or [Alexa SDK](https://developer.amazon.co
 
 The Alexa service can invoke either an [AWS Lambda](https://aws.amazon.com) function or a HTTPs endpoint. In this project we use the [funker framework/idea](https://github.com/bfirsh/serverless-docker) to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
 
+Video demo
+==========
+
+A video overview accompanies this demo:
+
+> * [Serverless functions in Docker on a Raspberry Pi cluster](https://www.youtube.com/watch?v=BQP67FWF1P8)
+
 Technical architecture:
 ======================
 
