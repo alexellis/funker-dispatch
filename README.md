@@ -38,7 +38,7 @@ This function finds the count of people in space by querying a remote JSON API o
 Usage:
 ======
 
-Make sure your nodes are running Docker 1.13-rc or newer. A quick upgrade can be to untar the docker binaries straight over the top of a 1.12 installation from `curl -sSL get.docker.com |sh`.
+Make sure your nodes are running Docker 1.13-rc or newer. A quick upgrade can be to untar the Docker binaries from the [Releases page](https://github.com/docker/docker/releases) straight over the top of a 1.12 installation from `curl -sSL get.docker.com |sh`.
 
 ```
 git clone https://github.com/alexellis/funker-dispatch
