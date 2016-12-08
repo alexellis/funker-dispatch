@@ -1,7 +1,8 @@
 # funker-dispatch
-HTTP dispatch for Amazon AWS triggers or [Alexa SDK](https://developer.amazon.com/alexa-skills-kit).
 
-The Alexa service can invoke either an [AWS Lambda](https://aws.amazon.com) function or a HTTPs endpoint. In this project we use the [funker framework/idea](https://github.com/bfirsh/serverless-docker) to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
+This project provides a PoC for serverless functions backed by Docker. This reposistory hosts an API gateway / HTTP dispatch for Amazon AWS triggers such as [Alexa SDK](https://developer.amazon.com/alexa-skills-kit), S3, DynamoDB and CloudWatch.
+
+The Amazon Alexa voice service will invoke either an [AWS Lambda](https://aws.amazon.com) function or a HTTPs endpoint. In this project we extend the [funker framework/idea](https://github.com/bfirsh/serverless-docker) to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
 
 Video demo
 ==========
@@ -10,18 +11,20 @@ A video overview accompanies this demo:
 
 > * [Serverless functions in Docker on a Raspberry Pi cluster](https://www.youtube.com/watch?v=BQP67FWF1P8)
 
+Check out the video for a high level overview of what serverless is and the aims of this demo.
+
 Technical architecture:
 ======================
 
 ![](https://raw.githubusercontent.com/alexellis/funker-dispatch/master/alexa-funker.png)
 
-Alexa custom skill invokes our HTTP dispatcher, which uses an attachable swarm network and name resolution to lookup a matching Docker service by name. The funker-node library is then used to dispatch the request and collect the response which is returned to AWS. Alexa will then speak out the response.
+The Alexa custom skill invokes our API gateway or HTTP dispatcher. Docker's attachable swarm network and name resolution allows us to lookup a matching Docker service by hostname. The funker-node library is then used to invoke the serverless function and collect the response which is returned to AWS. Alexa will then speak out the response.
 
 Functions are written to implement a simple TCP socket on port 9999. The original concept for the functions was put together by [Ben F / Justin Cormack](https://github.com/bfirsh/serverless-docker) from the Docker team.
 
 The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my [Raspberry Pi 2 Swarm](https://github.com/alexellis/docker-arm/). 
 
-> To build the Docker images for 64-bit just change the base image to a 64-bit Node image.
+> To build the Docker images for 64-bit just change the base image to a 64-bit Node image such as `node:6.9-slim`
 
 Example of funker handler function in Node.js
 
