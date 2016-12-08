@@ -20,7 +20,7 @@ The Alexa custom skill invokes our API gateway or HTTP dispatcher. Docker's atta
 
 Functions are written to implement a simple TCP socket on port 9999. The original concept for the functions was put together by [Ben F / Justin Cormack](https://github.com/bfirsh/serverless-docker) from the Docker team.
 
-The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my Raspberry Pi 2 Swarm
+The code is written in Node.js which is cross-platform. The Dockerfiles provided have a base image designed for ARM/Raspberry Pi because I'm running this experiment on my Raspberry Pi 2 Swarm:
 
 **See also:**
 
@@ -38,6 +38,8 @@ This function finds the count of people in space by querying a remote JSON API o
 Usage:
 ======
 
+Make sure your nodes are running Docker 1.13-rc or newer. A quick upgrade can be to untar the docker binaries straight over the top of a 1.12 installation from `curl -sSL get.docker.com |sh`.
+
 ```
 git clone https://github.com/alexellis/funker-dispatch
 cd funker-dispatch
@@ -47,6 +49,25 @@ docker build -t funker-dispatch .
 docker network create --attachable -d overlay funker
 docker run --net=funker -p 3000:3000 --name dispatch funker-dispatch
 ```
+
+Once your dispatch container is running head over to the HelloWorldIntent and create that service. If you have a mutli-node swarm, then push the container to the Hub or a registry first, for a single node just use the image name.
+
+Once the dispatch container is running and teh `HelloIntent` service has been created you can configure your Alexa Skill to use "HTTPs" for its invocations. Or just use `curl` and skip the voice portion completely:
+
+If you are tight on time then use [ngrok](https://ngrok.com) to set up a free HTTPs gateway.
+
+```
+ngrok http 3000
+```
+
+Here's an example with `curl`:
+
+```
+cd funker-dispatch
+curl -Sv -H "Content-Type: application/json" -X POST https://cad07930.ngrok.io -d @./sample_request.json
+```
+
+
 
 Sample JSON from Alexa Skills kit:
 =================================
