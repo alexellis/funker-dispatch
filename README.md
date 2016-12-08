@@ -1,4 +1,4 @@
-# funker-dispatch
+# Docker Swarm serverless API gateway 
 
 This project provides a PoC for serverless functions backed by Docker. This reposistory hosts an API gateway / HTTP dispatch for Amazon AWS triggers such as [Alexa SDK](https://developer.amazon.com/alexa-skills-kit), S3, DynamoDB and CloudWatch.
 
