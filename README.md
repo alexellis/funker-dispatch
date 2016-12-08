@@ -2,16 +2,14 @@
 
 This project provides a PoC for serverless functions backed by Docker. This reposistory hosts an API gateway / HTTP dispatch for Amazon AWS triggers such as [Alexa SDK](https://developer.amazon.com/alexa-skills-kit), S3, DynamoDB and CloudWatch.
 
-The Amazon Alexa voice service will invoke either an [AWS Lambda](https://aws.amazon.com) function or a HTTPs endpoint. In this project we extend the [funker framework/idea](https://github.com/bfirsh/serverless-docker) to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
+The Amazon Alexa voice service will invoke either an [AWS Lambda](https://aws.amazon.com) function or an HTTPs endpoint. In this project we extend the [funker framework/idea](https://github.com/bfirsh/serverless-docker) to create a Docker Swarm which is capable of running our own *serverless* functions across a high-availability swarm.
 
-Video demo
-==========
+Video overview & demo
+=====================
 
-A video overview accompanies this demo:
+Watch the high level overview of what serverless is, the aims of my PoC and for the live demo with an Echo Dot.
 
 > * [Serverless functions in Docker on a Raspberry Pi cluster](https://www.youtube.com/watch?v=BQP67FWF1P8)
-
-Check out the video for a high level overview of what serverless is and the aims of this demo.
 
 Technical architecture:
 ======================
