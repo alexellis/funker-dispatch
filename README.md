@@ -56,7 +56,9 @@ This function finds the count of people in space by querying a remote JSON API o
 
 * CaptainsIntent: [Docker captains counter](https://github.com/alexellis/captains-counter-funker)
 
-This function scrapes Docker's website and counts HTML elements to determine the number of Docker captains.
+This Node.js function scrapes Docker's website and counts HTML elements to determine the number of Docker captains.
+
+A Python version is also available: [dockercaptains-python-funker](https://github.com/alexellis/dockercaptains-python-funker)
 
 Usage:
 ======
