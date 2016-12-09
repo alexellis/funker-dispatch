@@ -11,6 +11,25 @@ Watch the high level overview of what serverless is, the aims of my PoC and for 
 
 > * [Serverless functions in Docker on a Raspberry Pi cluster](https://www.youtube.com/watch?v=BQP67FWF1P8)
 
+
+Changelog
+==========
+
+8 Dec 2016
+
+* Validation and override added for applicationId in JSON request
+* Validation added for JSON body
+* Support for Python functions with working sample
+* Docker Captains handler - counts captains via HTML scrape
+* Hostname handler - returns container hostname for showing round-robin from swarm
+* Allow mounting of `-v /var/run/docker.sock:/var/run/docker.sock` for checking services exist and validation
+
+Backlog
+=======
+* Dynamically create swarm services through remote API
+* HTML tester page for API gateway
+* Add upload of function definitions
+
 Technical architecture:
 ======================
 
@@ -51,7 +70,7 @@ git clone https://github.com/alexellis/funker-node
 docker build -t funker-dispatch .
 
 docker network create --attachable -d overlay funker
-docker run --net=funker -p 3000:3000 --name dispatch funker-dispatch
+docker run --net=funker -p 3000:3000 --name dispatch -v /var/run/docker.sock:/var/run/docker.sock funker-dispatch
 ```
 
 Once your dispatch container is running head over to the HelloWorldIntent and create that service. If you have a mutli-node swarm, then push the container to the Hub or a registry first, for a single node just use the image name.
