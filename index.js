@@ -2,110 +2,63 @@
 
 let request = require('request');
 let funker = require('./funker-node');
+var Docker = require('dockerode');
+var fs = require('fs');
 
 let express = require('express');
-let bodyparser=require('body-parser');
+let bodyparser = require('body-parser');
 let app = express();
-app.use(bodyparser.json({strict:false}));
+app.use(bodyparser.json({ strict: false }));
 
 let sample = require('./sampleresponse.json')
+let port = process.env.port || 3000;
+let authorizedApplicationId = process.env.authorizedApplicationId || "amzn1.ask.skill.72fb1025-aacc-4d05-a582-21344940c023";
 
-app.post("/", (req,res) => {
-  console.log("Id " + req.body.session.application.applicationId);
+var socket = process.env.DOCKER_SOCKET || '/var/run/docker.sock';
+var stats = fs.statSync(socket);
 
-  if(req.body.session.application.applicationId == "amzn1.ask.skill.72fb1025-aacc-4d05-a582-21344940c023") {
-    console.log("Intent " + req.body.request.intent.name);
-    let func = req.body.request.intent.name;
-    funker.call(func, req.body, (err, funcresult) => {
-      res.json(funcresult);
+if (!stats.isSocket()) {
+    throw new Error('Are you sure the docker is running?');
+}
+var docker = new Docker({ socketPath: socket });
+
+let find = (name, cb) => {
+    docker.listServices({
+        filters: { "name": [name] },
+        all: true
+    }, function(err, containers) {
+        cb(containers.length || 0);
     });
-  } else {
-     console.log(req.headers);
-     console.log(req.body);
-     res.json(sample);
-  }
-});
-
-app.listen(3000, () => {
-  console.log("Running..");
-
-});
-
-/*
-
-{
-  "version": "string",
-  "session": {
-    "new": true,
-    "sessionId": "string",
-    "application": {
-      "applicationId": "string"
-    },
-    "attributes": {
-      "string": {}
-    },
-    "user": {
-      "userId": "string",
-      "accessToken": "string"
-    }
-  },
-  "context": {
-    "System": {
-      "application": {
-        "applicationId": "string"
-      },
-      "user": {
-        "userId": "string",
-        "accessToken": "string"
-      },
-      "device": {
-        "supportedInterfaces": {
-          "AudioPlayer": {}
-        }
-      }
-    },
-    "AudioPlayer": {
-      "token": "string",
-      "offsetInMilliseconds": 0,
-      "playerActivity": "string"
-    }
-  },
-  "request": {}
 }
 
-
-*/
-
-/*
-{
-  "session": {
-    "sessionId": "SessionId.538d970d-edc5-40bb-ae0c-ca978468058b",
-    "application": {
-      "applicationId": "amzn1.ask.skill.b32fb0db-f0f0-4e64-b862-48e506f4ea68"
-    },
-    "attributes": {},
-    "user": {
-      "userId": "amzn1.ask.account.AEUHSFGVXWOYRSM2A7SVAK47L3I44TVOG6DBCTY2ACYSCUYQ65MWDZLUBZHLDD3XEMCYRLS4VSA54PQ7QBQW6FZLRJSMP5BOZE2B52YURUOSNOWORL44QGYDRXR3H7A7Y33OP3XKMUSJXIAFH7T2ZA6EQBLYRD34BPLTJXE3PDZE3V4YNFYUECXQNNH4TRG3ZBOYH2BF4BTKIIQ"
-    },
-    "new": true
-  },
-  "request": {
-    "type": "IntentRequest",
-    "requestId": "EdwRequestId.4b263cd6-3c8d-4455-a914-062b91dd994b",
-    "locale": "en-GB",
-    "timestamp": "2016-12-07T15:13:25Z",
-    "intent": {
-      "name": "ChangeColorIntent",
-      "slots": {
-        "LedColor": {
-          "name": "LedColor",
-          "value": "blue"
+app.post("/", (req, res) => {
+    if (req.body && req.body.session && req.body.session.application) {
+        console.log("Request from Id " + req.body.session.application.applicationId);
+        if (req.body.session.application.applicationId == authorizedApplicationId) {
+            if (req.body.request && req.body.request.intent && req.body.request.intent) {
+                console.log("Intent " + req.body.request.intent.name);
+                let serviceName = req.body.request.intent.name;
+                find(serviceName, (val) => {
+                    if (val > 0) {
+                        funker.call(serviceName, req.body, (err, funcresult) => {
+                            res.json(funcresult);
+                        });
+                    } else {
+                        return res.status(500).send("The function is not currently defined or started in the Docker Swarm.");
+                    }
+                });
+            } else {
+                return res.status(400).send("Supply valid Alexa SDK JSON request including an intent.");
+            }
+        } else {
+            return res.status(401).send("Your applicationId is not authorized for this API gateway.");
         }
-      }
+
+    } else {
+        return res.status(400).send("Supply valid Alexa SDK JSON");
     }
-  },
-  "version": "1.0"
-}
+});
 
-*/
-
+app.listen(port, () => {
+    console.log("Running API gateway on port: " + port);
+});
