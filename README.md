@@ -35,6 +35,10 @@ Example of funker handler function in Node.js
 
 This function finds the count of people in space by querying a remote JSON API over HTTP.
 
+* CaptainsIntent: [Docker captains counter](https://github.com/alexellis/captains-counter-funker)
+
+This function scrapes Docker's website and counts HTML elements to determine the number of Docker captains.
+
 Usage:
 ======
 
