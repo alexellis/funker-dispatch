@@ -17,7 +17,7 @@ Changelog
 
 11 Dec 2016
 
-* request_sample.json's intent matches README.md
+* sample_request.json's intent matches README.md
 
 8 Dec 2016
 
