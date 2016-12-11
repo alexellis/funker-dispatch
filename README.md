@@ -15,6 +15,10 @@ Watch the high level overview of what serverless is, the aims of my PoC and for 
 Changelog
 ==========
 
+11 Dec 2016
+
+* request_sample.json's intent matches README.md
+
 8 Dec 2016
 
 * Validation and override added for applicationId in JSON request
@@ -26,9 +30,12 @@ Changelog
 
 Backlog
 =======
+
 * Dynamically create swarm services through remote API
-* HTML tester page for API gateway
-* Add upload of function definitions
+* HTML tester page for API gateway with test events
+* Register handlers and Intents via YAML or JSON file
+* Handle Github webhooks in addition to the Alexa SDK
+* Upload page for function definitions
 
 Technical architecture:
 ======================
@@ -77,7 +84,7 @@ docker run --net=funker -p 3000:3000 --name dispatch -v /var/run/docker.sock:/va
 
 Once your dispatch container is running head over to the HelloWorldIntent and create that service. If you have a mutli-node swarm, then push the container to the Hub or a registry first, for a single node just use the image name.
 
-Once the dispatch container is running and teh `HelloIntent` service has been created you can configure your Alexa Skill to use "HTTPs" for its invocations. Or just use `curl` and skip the voice portion completely:
+Once the dispatch container is running and the `HelloIntent` service has been created you can configure your Alexa Skill to use "HTTPs" for its invocations. Or just use `curl` and skip the voice portion completely:
 
 If you are tight on time then use [ngrok](https://ngrok.com) to set up a free HTTPs gateway.
 
@@ -89,8 +96,17 @@ Here's an example with `curl`:
 
 ```
 cd funker-dispatch
-curl -Sv -H "Content-Type: application/json" -X POST https://cad07930.ngrok.io -d @./sample_request.json
+curl -Sv -H "Content-Type: application/json" -X POST http://localhost:3000 -d @./sample_request.json
 ```
+
+Validation
+==========
+
+The initial implementation has basic validation for the following:
+
+* request matches Alexa skill JSON format
+* applicationId is allowed to execute (must match index.js or environmental variable `authorizedApplicationId`)
+* swarm service exists (and can be invoked)
 
 Get in touch / feedback
 ========================
