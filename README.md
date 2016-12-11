@@ -83,6 +83,9 @@ Make sure your nodes are running Docker 1.13-rc or newer. A quick upgrade can be
 git clone https://github.com/alexellis/funker-dispatch
 cd funker-dispatch
 git clone https://github.com/alexellis/funker-node
+git checkout light_weight_refactor
+cd ../
+
 docker build -t funker-dispatch .
 
 docker network create --attachable -d overlay funker
