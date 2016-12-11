@@ -11,12 +11,12 @@ Watch the high level overview of what serverless is, the aims of my PoC and for 
 
 > * [Serverless functions in Docker on a Raspberry Pi cluster](https://www.youtube.com/watch?v=BQP67FWF1P8)
 
-
 Changelog
 ==========
 
 11 Dec 2016
 
+* Default platform is now x86_64, Raspberry Pi (ARM) accessible by Dockerfile.armhf
 * sample_request.json's intent matches README.md
 
 8 Dec 2016
@@ -53,8 +53,6 @@ The code is written in Node.js which is cross-platform. The Dockerfiles provided
 * Repo for Docker on ARM (images, tutorials): [alexellis/docker-arm](https://github.com/alexellis/docker-arm/)
 * [Raspberry Pi Docker Swarm deep dive](http://blog.alexellis.io/live-deep-dive-pi-swarm/)
 
-> To build the Docker images for 64-bit just change the base image to a 64-bit Node image such as `node:6.9-slim`
-
 Example of funker handler function in Node.js
 
 * [HelloWorldIntent](https://github.com/alexellis/helloworldintent-funker)
@@ -66,6 +64,15 @@ This function finds the count of people in space by querying a remote JSON API o
 This Node.js function scrapes Docker's website and counts HTML elements to determine the number of Docker captains.
 
 A Python version is also available: [dockercaptains-python-funker](https://github.com/alexellis/dockercaptains-python-funker)
+
+Request validation
+==================
+
+The initial implementation has basic validation for the following:
+
+* request matches Alexa skill JSON format
+* applicationId is allowed to execute (must match index.js or environmental variable `authorizedApplicationId`)
+* swarm service exists (and can be invoked)
 
 Usage:
 ======
@@ -82,31 +89,56 @@ docker network create --attachable -d overlay funker
 docker run --net=funker -p 3000:3000 --name dispatch -v /var/run/docker.sock:/var/run/docker.sock funker-dispatch
 ```
 
-Once your dispatch container is running head over to the HelloWorldIntent and create that service. If you have a mutli-node swarm, then push the container to the Hub or a registry first, for a single node just use the image name.
+Once your dispatch container is running head over to the HelloWorldIntent repo, build your image and create a service. If you have a mutli-node swarm, then push the container to the Hub or a registry first, for a single node just use the image name.
 
-Once the dispatch container is running and the `HelloIntent` service has been created you can configure your Alexa Skill to use "HTTPs" for its invocations. Or just use `curl` and skip the voice portion completely:
-
-If you are tight on time then use [ngrok](https://ngrok.com) to set up a free HTTPs gateway.
+Once the dispatch container is running and the `HelloIntent` service has been created you can configure your Alexa Skill in the Alexa SDK console to use "HTTPs" for its invocations. An Alexa skill will not invoke a HTTP insecure endpoint, for that reason if you are tight on time then use [ngrok](https://ngrok.com) to set up a quick HTTPs gateway.
 
 ```
 ngrok http 3000
 ```
 
-Here's an example with `curl`:
+Set up an utterance to fire off the request. I used:
+
+**Sample Utterances:**
+
+```
+HelloIntent how many people are in space
+HostnameIntent give me a hostname
+CaptainsIntent find out how many docker captains there are
+``` 
+
+**Intent Schema**
+
+```
+{
+  "intents": [
+    {
+      "intent": "HelloIntent"
+    },
+    {
+      "intent": "CaptainsIntent"
+    },
+    {
+      "intent": "HostnameIntent"
+    }
+  ]
+}
+```
+
+If you not have access to an Echo / Dot `curl` will allow you to bypass the voice portion completely (just use the sample .json file in the repo).
+
+Here's an example of invoking the (HelloIntent) with `curl`:
 
 ```
 cd funker-dispatch
 curl -Sv -H "Content-Type: application/json" -X POST http://localhost:3000 -d @./sample_request.json
 ```
 
-Validation
-==========
+You should see a response like this:
 
-The initial implementation has basic validation for the following:
-
-* request matches Alexa skill JSON format
-* applicationId is allowed to execute (must match index.js or environmental variable `authorizedApplicationId`)
-* swarm service exists (and can be invoked)
+```
+{"version":"1.0","response":{"outputSpeech":{"type":"PlainText","text":"There's currently 6 people in space"},"card":{"content":"There's currently 6 people in space","title":"People in space","type":"Simple"},"shouldEndSession":true},"sessionAttributes":{}}
+```
 
 Get in touch / feedback
 ========================

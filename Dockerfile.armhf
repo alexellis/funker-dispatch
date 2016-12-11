@@ -1,4 +1,4 @@
-FROM node:6.9-slim
+FROM alexellis2/nodejs-armhf:6.9.2
 ENTRYPOINT []
 COPY package.json .
 COPY sampleresponse.json .
