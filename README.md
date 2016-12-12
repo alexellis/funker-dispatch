@@ -14,6 +14,10 @@ Watch the high level overview of what serverless is, the aims of my PoC and for 
 Changelog
 ==========
 
+12 Dec 2016
+
+* Pushed remote branch [services/json](https://github.com/alexellis/funker-dispatch/tree/services_json) - looking into a manifest file for defining available functions. Includes support for Github push webhooks.
+
 11 Dec 2016
 
 * Default platform is now x86_64, Raspberry Pi (ARM) accessible by Dockerfile.armhf
