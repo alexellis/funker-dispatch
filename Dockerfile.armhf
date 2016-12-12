@@ -7,6 +7,8 @@ RUN npm i
 
 COPY index.js .
 COPY postHandler.js .
+COPY services.json .
+COPY serviceRepo.js .
 
 EXPOSE 3000
 CMD ["npm", "start"]

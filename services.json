@@ -1,0 +1,35 @@
+{
+    "version": "1.0",
+    "services": 
+    [
+        {
+            "type": "alexa",
+            "provider": "amazon",
+            "service": "HelloIntent",
+            "image": "alexellis2/helloworldintent-funker:latest"
+        },
+        {
+            "type": "alexa",
+            "provider": "amazon",
+            "service": "HostnameIntent",
+            "image": "alexellis2/hostname-funker:latest"
+        },
+        {
+            "type": "alexa",
+            "provider": "amazon",
+            "service" : "CaptainsIntent",
+            "image": "alexellis2/dockercaptains-funker:latest"
+        },
+        {
+            "type": "alexa",
+            "provider": "amazon",
+            "service": "CaptainsPyIntent",
+            "image": "alexellis2/dockercaptains-python-funker:latest"
+        },
+        {
+            "type": "github",
+            "provider": "github",
+            "service": "CommitFetch"
+        }
+    ]
+}

@@ -24,10 +24,11 @@ let getDocker = () => {
     return docker;
 }
 
+let Services = require ("./serviceRepo");
 let PostHandler = require('./postHandler');
 
 let docker = getDocker();
-let postHandler = new PostHandler({"docker": docker, "funker": funker})
+let postHandler = new PostHandler({"docker": docker, "funker": funker, "services": new Services()})
 
 let find = (name, cb) => {
     docker.listServices({
