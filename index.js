@@ -39,7 +39,7 @@ let find = (name, cb) => {
         containers.forEach((container)=> {
            if(container.Spec.Name.indexOf("Intent") > -1) {
                match.push({"Name": container.Spec.Name, "CreatedAt": container.CreatedAt, "Mode": container.Spec.Mode,"Image": container.Spec.TaskTemplate.ContainerSpec.Image});
-           } 
+           }
         });
         cb(err, match);
     });

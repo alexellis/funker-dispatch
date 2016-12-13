@@ -12,8 +12,10 @@ class PostHandler {
 
     createHandler() { 
         let handler = (req, res) => {
+            let start = new Date().getTime();
+            console.log("IP ["+req.ip+"]");
 
-            console.log(req.headers);
+            console.log("Headers", req.headers);
             if(!req.body) {
                 return res.status(400).send("Body is required.");
             }
@@ -42,7 +44,7 @@ class PostHandler {
                         }
                     }
 
-                    return this._dispatchJson(req.body, res, service.service);
+                    return this._dispatchJson(req.body, res, service.service, start);
                 }
                 else if (serviceType == "alexa") {
                     if (!(req.body.session && req.body.session.application)) {
@@ -68,7 +70,7 @@ class PostHandler {
                             break;
                         }
                     }
-                    return this._dispatchAlexa(req.body, res);
+                    return this._dispatchAlexa(req.body, res, start);
                 }
             });
         };
@@ -84,7 +86,7 @@ class PostHandler {
         });
     }
 
-    _dispatchJson (body, res, serviceName) {
+    _dispatchJson (body, res, serviceName, start) {
         console.log("Dispatching JSON to: ", serviceName);
         this._find(serviceName, (serviceCount) => {
             if (serviceCount > 0) {
@@ -96,6 +98,8 @@ class PostHandler {
 
                     try {
                         res.json(funcresult);
+                        let end = new Date().getTime();
+                        console.log("Duration ["+serviceName+"] = "+ ((end-start)/1000).toFixed(2) + " s" );
                     } catch(e) {
                         console.error("Error parsing funker.call response: ", e);
                         return res.status(500).json(e);
@@ -107,7 +111,7 @@ class PostHandler {
         });
     }
 
-    _dispatchAlexa (body, res) {
+    _dispatchAlexa (body, res, start) {
         console.log("Intent " + body.request.intent.name);
         let serviceName = body.request.intent.name;
         this._find(serviceName, (serviceCount) => {
@@ -120,6 +124,8 @@ class PostHandler {
 
                     try {
                         res.json(funcresult);
+                        let end = new Date().getTime();
+                        console.log("Duration ["+body.request.intent.name+"] = "+ (((end-start)/1000)).toFixed(2) + " s" );
                     } catch(e) {
                         console.error("Error parsing funker.call response: ", e);
                         return res.status(500).json(e);
