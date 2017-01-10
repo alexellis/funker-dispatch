@@ -24,10 +24,11 @@ let getDocker = () => {
     return docker;
 }
 
+let Services = require ("./serviceRepo");
 let PostHandler = require('./postHandler');
 
 let docker = getDocker();
-let postHandler = new PostHandler({"docker": docker, "funker": funker})
+let postHandler = new PostHandler({"docker": docker, "funker": funker, "services": new Services()})
 
 let find = (name, cb) => {
     docker.listServices({
@@ -35,10 +36,16 @@ let find = (name, cb) => {
         all: true
     }, function(err, containers) {
         let match=[];
-        containers.forEach((container)=> {
-           if(container.Spec.Name.indexOf("Intent") > -1) {
-               match.push({"Name": container.Spec.Name, "CreatedAt": container.CreatedAt, "Mode": container.Spec.Mode,"Image": container.Spec.TaskTemplate.ContainerSpec.Image});
-           } 
+        containers.forEach((container) => {
+           if(container.Spec.Name.indexOf(name) > -1) {
+               match.push(
+                {
+                    "Name": container.Spec.Name, 
+                    "CreatedAt": container.CreatedAt, 
+                    "Mode": container.Spec.Mode,
+                    "Image": container.Spec.TaskTemplate.ContainerSpec.Image
+                });
+           }
         });
         cb(err, match);
     });
