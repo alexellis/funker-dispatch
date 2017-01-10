@@ -45,7 +45,7 @@ let find = (name, cb) => {
                     "Mode": container.Spec.Mode,
                     "Image": container.Spec.TaskTemplate.ContainerSpec.Image
                 });
-           } 
+           }
         });
         cb(err, match);
     });
