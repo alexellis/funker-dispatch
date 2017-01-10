@@ -36,9 +36,15 @@ let find = (name, cb) => {
         all: true
     }, function(err, containers) {
         let match=[];
-        containers.forEach((container)=> {
-           if(container.Spec.Name.indexOf("Intent") > -1) {
-               match.push({"Name": container.Spec.Name, "CreatedAt": container.CreatedAt, "Mode": container.Spec.Mode,"Image": container.Spec.TaskTemplate.ContainerSpec.Image});
+        containers.forEach((container) => {
+           if(container.Spec.Name.indexOf(name) > -1) {
+               match.push(
+                {
+                    "Name": container.Spec.Name, 
+                    "CreatedAt": container.CreatedAt, 
+                    "Mode": container.Spec.Mode,
+                    "Image": container.Spec.TaskTemplate.ContainerSpec.Image
+                });
            } 
         });
         cb(err, match);
