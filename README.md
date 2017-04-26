@@ -14,6 +14,10 @@ Watch the high level overview of what serverless is, the aims of my PoC and for 
 Changelog
 ==========
 
+13 Jan 2017
+
+* **This project is deprecated and development has stopped in favour of [Functions as a Service (FaaS)](http://github.com/alexellis/faas)**
+
 12 Dec 2016
 
 * Pushed remote branch [services/json](https://github.com/alexellis/funker-dispatch/tree/services_json) - looking into a manifest file for defining available functions. Includes support for Github push webhooks.
