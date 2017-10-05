@@ -16,7 +16,7 @@ Changelog
 
 13 Jan 2017
 
-* **This project is deprecated and development has stopped in favour of [Functions as a Service (FaaS)](http://github.com/alexellis/faas)**
+* **This project is deprecated and development has stopped in favour of [OpenFaaS - Functions as a Service](http://github.com/openfaas/faas)**
 
 12 Dec 2016
 
